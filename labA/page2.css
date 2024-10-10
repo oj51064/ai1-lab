@@ -10,13 +10,14 @@
 body {
     font-family: 'Courier New', monospace;
     background-image: url('background.png');
-    background-size: cover; /* Wypełnia tło */
-    background-position: center; /* Ustawia obraz w centrum */
+    background-size: cover;
+    background-position: center;
     color: #f0f0f0;
+    margin: 0;
 }
 
 header {
-    background-color: rgba(255, 71, 87, 0.8); /* Użycie półprzezroczystego tła */
+    background-color: rgba(255, 71, 87, 0.8);
     color: #ffffff;
     padding: 40px 0;
     text-align: center;
@@ -24,20 +25,20 @@ header {
 }
 
 h1 {
-    font-size: 3em;
+    font-size: 3rem;
     letter-spacing: 2px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 h2 {
-    font-size: 2.2em;
+    font-size: 2.2rem;
     margin: 15px 0;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 h3 {
-    font-size: 1.8em;
+    font-size: 1.8rem;
     margin-top: 30px;
     color: #2ed573;
     border-bottom: 2px dashed #ffffff;
@@ -46,11 +47,26 @@ h3 {
 
 main {
     padding: 40px;
-    max-width: 800px;
+    max-width: 90%;
     margin: 30px auto;
-    background: rgba(47, 53, 66, 0.9); /* Półprzezroczyste tło dla głównego kontenera */
-    border-radius: 15px;
+    background: rgba(47, 53, 66, 0.9);
+    border: red 3px dashed;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.img-kot {
+    display: block;
+    margin: 20px auto 0;
+    width: 80%;
+    max-width: 200px;
+    height: auto;
+    border: 5px solid #2ed573; /* Grubsza, zielona ramka */
+    border-radius: 0px;
+}
+
+#img_swap {
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 p {
@@ -66,7 +82,7 @@ ul {
 footer {
     text-align: center;
     padding: 25px 0;
-    background-color: rgba(255, 71, 87, 0.8); /* Użycie półprzezroczystego tła */
+    background-color: rgba(255, 71, 87, 0.8);
     color: #ffffff;
     position: relative;
     bottom: 0;
@@ -88,61 +104,52 @@ a:hover {
     border-radius: 5px;
 }
 
-/* Responsywność: style dla mniejszych ekranów */
+/* Media Queries for responsiveness */
 @media (max-width: 768px) {
-    header {
-        padding: 30px 0;
+    .img-kot {
+        width: 120px; /* Zmniejszenie rozmiaru obrazka na mniejszych ekranach */
     }
 
     h1 {
-        font-size: 2.5em;
+        font-size: 2.5rem;
     }
 
     h2 {
-        font-size: 1.8em;
-    }
-
-    main {
-        padding: 20px;
-        margin: 20px 10px;
+        font-size: 1.8rem;
     }
 
     h3 {
-        font-size: 1.5em;
-    }
-
-    p {
-        font-size: 1em;
-    }
-}
-
-@media (max-width: 480px) {
-    header {
-        padding: 20px 0;
-    }
-
-    h1 {
-        font-size: 2em;
-    }
-
-    h2 {
-        font-size: 1.4em;
+        font-size: 1.4rem;
     }
 
     main {
-        padding: 15px;
-        margin: 15px 5px;
-    }
-
-    h3 {
-        font-size: 1.2em;
-    }
-
-    p {
-        font-size: 0.9em;
+        padding: 30px;
+        max-width: 95%;
     }
 
     footer {
         padding: 15px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .img-kot {
+        width: 100px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+    }
+
+    main {
+        padding: 20px;
     }
 }

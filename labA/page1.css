@@ -12,6 +12,7 @@ body {
     line-height: 1.6;
     background-color: #f4f4f4;
     color: #333;
+    margin: 0;
 }
 
 header {
@@ -21,12 +22,34 @@ header {
     text-align: center;
 }
 
+.img-kot {
+    display: block;
+    margin: 0 auto 20px;
+    width: 50%;
+    max-width: 100px;
+    height: auto;
+    border: 3px solid #4a90e2; /* Cienka, niebieska ramka */
+    border-radius: 12px;
+}
+
+#headers {
+    text-align: right;
+}
+
+#list {
+    border: #4a90e2 2px solid;
+    border-radius: 5px;
+    margin: 0 auto;
+    width: fit-content;
+    text-align: center;
+}
+
 h1 {
-    font-size: 2.5em;
+    font-size: 2.5rem;
 }
 
 h2 {
-    font-size: 1.8em;
+    font-size: 1.8rem;
     margin-top: 10px;
 }
 
@@ -37,7 +60,7 @@ h3 {
 
 main {
     padding: 20px;
-    max-width: 800px;
+    max-width: 90%; /* Zmienione z 800px na procent */
     margin: 20px auto;
     background: white;
     border-radius: 8px;
@@ -70,4 +93,54 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+    .img-kot {
+        width: 120px; /* Zmniejszenie rozmiaru obrazka na mniejszych ekranach */
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.3rem;
+    }
+
+    main {
+        padding: 15px;
+        max-width: 95%; /* Zwiększone na mniejszych ekranach */
+    }
+
+    footer {
+        padding: 10px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .img-kot {
+        width: 100px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    h3 {
+        font-size: 1.1rem;
+    }
+
+    main {
+        padding: 10px;
+    }
 }
