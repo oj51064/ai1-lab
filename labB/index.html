@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Zadań</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="search" placeholder="Szukaj...">
+        <ul id="taskList"></ul>
+        <input type="text" id="taskInput" placeholder="Dodaj nowe zadanie..." maxlength="255">
+        <input type="date" id="taskDate">
+        <button id="addTaskButton">Zapisz</button>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
+
+<!-- to correct:
+- highlight searched term
+- add checkbox (it does nothing) 
+- rework edit field-->
