@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAB C - Mapa</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <h1>Mapa interaktywna</h1>
+    
+    <button id="locationButton">Moja lokalizacja</button>
+    <button id="downloadMap">Pobierz mapę</button>
+    
+    <div class="grid-container">
+        <div class="map" id="map" style="height: 250px;"></div>
+        <div class="satellite">
+            <img id="mapImage" alt="Pobrana mapa" style="width: 100%; height: auto;">
+        </div>
+        <div class="scrambled" id="scrambledImages"></div>
+        <div class="empty-frame" id="emptyFrame"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
