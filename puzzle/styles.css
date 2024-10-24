@@ -1,0 +1,50 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.container {
+    display: flex;
+}
+
+.pieces {
+    width: 200px;
+    margin-right: 20px;
+}
+
+.piece {
+    width: 80px;
+    height: 80px;
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.target {
+    width: 200px;
+    height: 320px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.target-piece {
+    width: 80px;
+    height: 80px;
+    border: 2px dashed #ccc;
+    margin: 10px 0;
+    position: relative;
+}
+
+.target-piece:hover {
+    background-color: #e0e0e0; /* Przy zmianie koloru */
+}
