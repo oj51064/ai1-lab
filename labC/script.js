@@ -69,8 +69,8 @@ function createScrambledPuzzle(imgUrl) {
 
     const rows = 4;
     const cols = 4;
-    const pieceWidth = 150;
-    const pieceHeight = 100;
+    const pieceWidth = 150; // Szerokość puzzli
+    const pieceHeight = 100; // Wysokość puzzli
 
     let pieces = [];
 
@@ -79,11 +79,12 @@ function createScrambledPuzzle(imgUrl) {
             const piece = document.createElement('div');
             piece.style.backgroundImage = `url(${imgUrl})`;
             piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
-            piece.style.width = `${pieceWidth}px`;
-            piece.style.height = `${pieceHeight}px`;
+            piece.style.width = '100%'; // Pełna szerokość kratki
+            piece.style.height = '100%'; // Pełna wysokość kratki
             piece.style.backgroundSize = `${cols * pieceWidth}px ${rows * pieceHeight}px`;
-            //piece.draggable = true;
+            piece.draggable = true; // Umożliwienie przeciągania
 
+            // Nasłuchiwanie zdarzeń przeciągania
             piece.addEventListener('dragstart', (e) => {
                 e.dataTransfer.setData('pieceId', piece.style.backgroundPosition);
                 e.target.classList.add('dragging');
@@ -101,13 +102,6 @@ function createScrambledPuzzle(imgUrl) {
     pieces.forEach(piece => container.appendChild(piece));
 }
 
-const emptyFrame = document.getElementById('emptyFrame');
-
-
-// Nasłuchuj przycisków
-document.getElementById('locationButton').addEventListener('click', getLocation);
-document.getElementById('downloadMap').addEventListener('click', downloadMap);
-
 function createPuzzleGrid() {
     const puzzleContainer = document.getElementById('puzzleContainer');
     puzzleContainer.innerHTML = ''; // Wyczyść zawartość kontenera
@@ -120,6 +114,25 @@ function createPuzzleGrid() {
         const cell = document.createElement('div');
         cell.style.border = '1px solid #000'; // Obramowanie każdej komórki
         cell.style.backgroundColor = '#e0e0e0'; // Kolor tła
+        cell.addEventListener('dragover', (e) => {
+            e.preventDefault(); // Zapobiega domyślnemu zachowaniu
+        });
+
+        cell.addEventListener('drop', (e) => {
+            const backgroundPosition = e.dataTransfer.getData('pieceId');
+            const droppedPiece = document.createElement('div');
+            droppedPiece.style.backgroundImage = `url(${document.getElementById('mapImage').src})`;
+            droppedPiece.style.backgroundPosition = backgroundPosition;
+            droppedPiece.style.width = '100%';
+            droppedPiece.style.height = '100%';
+            droppedPiece.style.backgroundSize = `600px 400px`; // Dopasowanie do rozmiaru obrazka
+            droppedPiece.style.border = '1px solid #ccc'; // Opcjonalna ramka
+            droppedPiece.style.boxSizing = 'border-box'; // Umożliwia dodanie obramowania do wymiarów
+
+            cell.innerHTML = ''; // Wyczyść komórkę
+            cell.appendChild(droppedPiece); // Dodaj przesunięty puzzel
+        });
+
         puzzleContainer.appendChild(cell);
     }
 }
@@ -129,3 +142,7 @@ window.onload = () => {
     initMap(); // Inicjalizacja mapy
     createPuzzleGrid(); // Tworzenie kratki na puzzle
 };
+
+// Nasłuchuj przycisków
+document.getElementById('locationButton').addEventListener('click', getLocation);
+document.getElementById('downloadMap').addEventListener('click', downloadMap);

@@ -1,47 +1,77 @@
 body {
     font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the elements horizontally */
+    justify-content: center; /* Center the elements vertically */
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0; /* Optional background color */
+}
+
+h1 {
+    margin-bottom: 20px; /* Space between title and buttons */
+}
+
+button {
+    margin: 10px; /* Space around buttons */
 }
 
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 10px;
-    margin-top: 20px;
-    height: 500px; /* Wysokość całego kontenera */
+    grid-template-columns: 1fr 1fr; /* Two columns layout */
+    gap: 20px; /* Space between grid items */
+    max-width: 1400px; /* Maximum width of the grid */
+    width: 100%; /* Full width */
+    padding: 20px; /* Padding inside the container */
 }
 
 .map,
-.satellite,
-.empty-frame,
-.puzzle-container {
-    width: 650px;
-    height: 450px;
-    position: relative; /* Umożliwia pozycjonowanie wewnętrznych elementów */
-}
-
-.map {
-    border: 1px solid #ccc; /* Ramka dla mapy */
+.satellite {
+    width: 650px; /* Fixed width */
+    height: 450px; /* Fixed height */
+    border: 1px solid #ccc; /* Common border */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white; /* Background color for items */
 }
 
 .satellite img {
-    width: 100%;
-    height: auto; /* Utrzymuje proporcje zdjęcia */
+    max-width: 100%; /* Ensure the image fits within the container */
+    height: auto; /* Maintain aspect ratio */
 }
 
 .scrambled {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 0; /* Ustawiamy gap na 0 */
-    height: 100%;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for puzzle pieces */
+    gap: 0; /* No gap between pieces */
+    height: 100%; /* Full height of the parent */
 }
 
 .puzzle-container {
-    border: 1px solid #ccc; /* Ramka dla kontenera na puzzle */
-    background-color: #f9f9f9;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 0; /* Odstęp między puzzlami */
+    border: 1px solid #ccc; /* Border for puzzle container */
+    background-color: #f9f9f9; /* Light background for the puzzle container */
+    display: grid; /* Grid display for puzzle pieces */
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for puzzle grid */
+    gap: 0; /* No gap between cells */
+    width: 650px; /* Ensure the puzzle grid has the same width */
+    height: 450px; /* Match height with other components */
+    position: relative; /* Ensure positioning within the grid */
+}
+
+.puzzle-container div {
+    display: flex; /* Flexbox for centering contents */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    border: 1px solid #000; /* Add border to cells for visibility */
+    background-color: #e0e0e0; /* Background color for cells */
+    box-sizing: border-box; /* Ensure borders are included in total size */
+    width: 100%; /* Full width of the grid cell */
+    height: 100%; /* Full height of the grid cell */
+}
+
+.scrambled div {
+    width: 100%; /* Full width of the grid cell */
+    height: 100%; /* Full height of the grid cell */
 }
