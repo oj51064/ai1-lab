@@ -52,7 +52,7 @@ function downloadMap() {
     const north = bounds.getNorth();
     const zoom = map.getZoom();
 
-    const imgUrl = `https://static-maps.yandex.ru/1.x/?ll=${(west + east) / 2},${(north + south) / 2}&size=600,400&z=${zoom}&l=sat`;
+    const imgUrl = `https://static-maps.yandex.ru/1.x/?ll=${(west + east) / 2},${(north + south) / 2}&size=650,450&z=${zoom}&l=sat`;
     
     const mapImage = document.getElementById('mapImage');
     if (mapImage) {
@@ -82,7 +82,7 @@ function createScrambledPuzzle(imgUrl) {
             piece.style.width = `${pieceWidth}px`;
             piece.style.height = `${pieceHeight}px`;
             piece.style.backgroundSize = `${cols * pieceWidth}px ${rows * pieceHeight}px`;
-            piece.draggable = true;
+            //piece.draggable = true;
 
             piece.addEventListener('dragstart', (e) => {
                 e.dataTransfer.setData('pieceId', piece.style.backgroundPosition);
@@ -103,70 +103,29 @@ function createScrambledPuzzle(imgUrl) {
 
 const emptyFrame = document.getElementById('emptyFrame');
 
-emptyFrame.addEventListener('dragover', (e) => {
-    e.preventDefault(); // Pozwól na upuszczenie
-});
-
-emptyFrame.addEventListener('drop', (e) => {
-    e.preventDefault();
-
-    const piecePosition = e.dataTransfer.getData('pieceId');
-    const piece = document.createElement('div');
-    piece.style.backgroundImage = `url(${document.getElementById('mapImage').src})`;
-    piece.style.backgroundPosition = piecePosition;
-    piece.style.width = '150px';
-    piece.style.height = '100px';
-    piece.style.backgroundSize = '600px 400px';
-
-    // Obliczanie pozycji w ramce
-    const frameRect = emptyFrame.getBoundingClientRect();
-    const offsetX = e.clientX - frameRect.left;
-    const offsetY = e.clientY - frameRect.top;
-
-    const col = Math.floor((offsetX / emptyFrame.offsetWidth) * 4);
-    const row = Math.floor((offsetY / emptyFrame.offsetHeight) * 4);
-    const targetIndex = row * 4 + col;
-
-    console.log(`Target Index: ${targetIndex}`); // Dodaj log do debugowania
-
-    // Upewnij się, że pole, na które upuszczamy, jest puste
-    if (targetIndex >= 0 && targetIndex < 16) {
-        const existingPiece = emptyFrame.children[targetIndex];
-
-        if (!existingPiece) {
-            // Wstaw puzzel na odpowiednią pozycję
-            if (targetIndex < emptyFrame.children.length) {
-                emptyFrame.insertBefore(piece, emptyFrame.children[targetIndex]);
-            } else {
-                emptyFrame.appendChild(piece);
-            }
-        } else {
-            alert("To pole jest już zajęte!");
-        }
-    }
-
-    // Usunięcie puzzla z kontenera
-    const originalPiece = document.querySelector(`#scrambledImages div[style*="${piecePosition}"]`);
-    if (originalPiece) {
-        originalPiece.remove();
-    }
-
-    checkPuzzleCompletion();
-});
-
-
-
-// Sprawdzenie ukończenia układanki
-function checkPuzzleCompletion() {
-    const emptyFramePieces = emptyFrame.children;
-
-    if (emptyFramePieces.length === 16) {
-        alert("Gratulacje! Ułożyłeś puzzle!");
-    }
-}
 
 // Nasłuchuj przycisków
 document.getElementById('locationButton').addEventListener('click', getLocation);
 document.getElementById('downloadMap').addEventListener('click', downloadMap);
 
-window.onload = initMap;
+function createPuzzleGrid() {
+    const puzzleContainer = document.getElementById('puzzleContainer');
+    puzzleContainer.innerHTML = ''; // Wyczyść zawartość kontenera
+
+    const rows = 4;
+    const cols = 4;
+
+    // Tworzenie 16 komórek (4x4)
+    for (let i = 0; i < rows * cols; i++) {
+        const cell = document.createElement('div');
+        cell.style.border = '1px solid #000'; // Obramowanie każdej komórki
+        cell.style.backgroundColor = '#e0e0e0'; // Kolor tła
+        puzzleContainer.appendChild(cell);
+    }
+}
+
+// Wywołaj funkcję tworzącą kratkę przy ładowaniu strony
+window.onload = () => {
+    initMap(); // Inicjalizacja mapy
+    createPuzzleGrid(); // Tworzenie kratki na puzzle
+};
