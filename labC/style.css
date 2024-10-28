@@ -72,6 +72,7 @@ button {
 }
 
 .scrambled div {
-    width: 100%; /* Full width of the grid cell */
-    height: 100%; /* Full height of the grid cell */
+    width: 150px; /* Stała szerokość puzzli */
+    height: 100px; /* Stała wysokość puzzli */
+    flex-shrink: 0; /* Zapobiega zmniejszaniu rozmiaru puzzli */
 }
