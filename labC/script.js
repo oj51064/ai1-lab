@@ -121,25 +121,46 @@ function createPuzzleGrid() {
 
         cell.addEventListener('drop', (e) => {
             e.preventDefault(); // Zapobiega domyślnemu zachowaniu
-        
+            
+            const draggingPiece = document.querySelector('.dragging');
+
+            if (!draggingPiece) return;
+
             // Sprawdź, czy komórka docelowa jest pusta
             if (cell.childElementCount === 0) {
-                const draggingPiece = document.querySelector('.dragging');
+                // Dodaj przeniesiony element do aktualnej komórki
+                draggingPiece.classList.remove('dragging');
+                draggingPiece.style.width = '100%';
+                draggingPiece.style.height = '100%';
+                draggingPiece.style.border = '1px solid #ccc';
+                draggingPiece.style.backgroundSize = `600px 400px`; // Dopasowanie do rozmiaru obrazka
+                draggingPiece.style.boxSizing = 'border-box';
+    
+                cell.appendChild(draggingPiece); // Dodaj przesunięty puzzel do nowej komórki
+            } else {
+                // Jeśli komórka jest zajęta, znajdź najbliższą wolną kratkę
+                const puzzleContainer = document.getElementById('puzzleContainer');
+                const cells = Array.from(puzzleContainer.children);
+                const occupiedPiece = cell.firstElementChild;
         
-                if (draggingPiece) {
-                    // Usuń element z pierwotnej komórki
-                    draggingPiece.innerHTML = '';
+                // Znajdź pierwszą wolną kratkę w siatce
+                const emptyCell = cells.find(c => c.childElementCount === 0);
         
-                    // Dodaj przeniesiony element do aktualnej komórki
-                    draggingPiece.classList.remove('dragging');
-                    draggingPiece.style.width = '100%';
-                    draggingPiece.style.height = '100%';
-                    draggingPiece.style.border = '1px solid #ccc';
-                    draggingPiece.style.backgroundSize = `600px 400px`; // Dopasowanie do rozmiaru obrazka
-                    draggingPiece.style.boxSizing = 'border-box';
-        
-                    cell.appendChild(draggingPiece); // Dodaj przesunięty puzzel do nowej komórki
+                if (emptyCell) {
+                    // Przenieś istniejący puzzel do najbliższej wolnej kratki
+                    emptyCell.appendChild(occupiedPiece);
                 }
+        
+                // Dodaj przesunięty puzzel do aktualnej komórki
+                draggingPiece.classList.remove('dragging');
+                
+                draggingPiece.style.width = '100%';
+                draggingPiece.style.height = '100%';
+                draggingPiece.style.border = '1px solid #ccc';
+                draggingPiece.style.backgroundSize = `600px 400px`; // Dopasowanie do rozmiaru obrazka
+                draggingPiece.style.boxSizing = 'border-box';
+
+                cell.appendChild(draggingPiece);
             }
         });
 
