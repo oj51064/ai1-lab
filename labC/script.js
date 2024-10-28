@@ -85,6 +85,9 @@ function createScrambledPuzzle(imgUrl) {
             piece.style.backgroundSize = `${cols * pieceWidth}px ${rows * pieceHeight}px`;
             piece.draggable = true; // Umożliwienie przeciągania
 
+            // Dodaj atrybut data-index do każdego puzzla
+            piece.dataset.index = `${row}-${col}`;
+
             // Nasłuchiwanie zdarzeń przeciągania
             piece.addEventListener('dragstart', (e) => {
                 e.dataTransfer.setData('pieceId', piece.style.backgroundPosition);
@@ -135,25 +138,25 @@ function createPuzzleGrid() {
                 draggingPiece.style.border = '1px solid #ccc';
                 draggingPiece.style.backgroundSize = `600px 400px`; // Dopasowanie do rozmiaru obrazka
                 draggingPiece.style.boxSizing = 'border-box';
-    
+
                 cell.appendChild(draggingPiece); // Dodaj przesunięty puzzel do nowej komórki
+
+                // Sprawdź, czy puzzle są poprawnie ułożone
+                checkPuzzleCompletion();
             } else {
                 // Jeśli komórka jest zajęta, znajdź najbliższą wolną kratkę
                 const puzzleContainer = document.getElementById('puzzleContainer');
                 const cells = Array.from(puzzleContainer.children);
                 const occupiedPiece = cell.firstElementChild;
-        
-                // Znajdź pierwszą wolną kratkę w siatce
+                draggingPiece.classList.remove('dragging');
+
+                // Przenieś istniejący puzzel do najbliższej wolnej kratki
                 const emptyCell = cells.find(c => c.childElementCount === 0);
-        
                 if (emptyCell) {
-                    // Przenieś istniejący puzzel do najbliższej wolnej kratki
                     emptyCell.appendChild(occupiedPiece);
                 }
         
                 // Dodaj przesunięty puzzel do aktualnej komórki
-                draggingPiece.classList.remove('dragging');
-                
                 draggingPiece.style.width = '100%';
                 draggingPiece.style.height = '100%';
                 draggingPiece.style.border = '1px solid #ccc';
@@ -161,10 +164,43 @@ function createPuzzleGrid() {
                 draggingPiece.style.boxSizing = 'border-box';
 
                 cell.appendChild(draggingPiece);
+
+                // Sprawdź, czy puzzle są poprawnie ułożone
+                checkPuzzleCompletion();
             }
         });
 
         puzzleContainer.appendChild(cell);
+    }
+}
+
+function checkPuzzleCompletion() {
+    const puzzleContainer = document.getElementById('puzzleContainer');
+    const cells = Array.from(puzzleContainer.children);
+    
+    const rows = 4;
+    const cols = 4;
+    let isCompleted = true;
+
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            const cell = cells[row * cols + col];
+            if (cell.childElementCount === 0) {
+                isCompleted = false;
+                break;
+            }
+
+            const piece = cell.firstElementChild;
+            const expectedIndex = `${row}-${col}`; // Oczekiwany indeks
+            if (piece.dataset.index !== expectedIndex) {
+                isCompleted = false;
+                break;
+            }
+        }
+    }
+
+    if (isCompleted) {
+        alert("Gratulacje! Puzzle zostały poprawnie ułożone!");
     }
 }
 
