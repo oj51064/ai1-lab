@@ -37,6 +37,12 @@ button {
     background-color: white; /* Background color for items */
 }
 
+#coordinatesDisplay {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
 .satellite img {
     max-width: 100%; /* Ensure the image fits within the container */
     height: auto; /* Maintain aspect ratio */

@@ -1,4 +1,5 @@
 let map;
+let notificationsEnabled = false; // Flaga do sprawdzania uprawnień
 
 function initMap() {
     map = L.map('map').setView([51.505, -0.09], 13);
@@ -7,6 +8,24 @@ function initMap() {
         maxZoom: 19,
         attribution: '© OpenStreetMap'
     }).addTo(map);
+}
+
+function requestNotificationPermission() {
+    if (Notification.permission === "granted") {
+        notificationsEnabled = true; // Powiadomienia są dozwolone
+    } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+            notificationsEnabled = (permission === "granted");
+        });
+    }
+}
+
+function showNotification() {
+    if (notificationsEnabled) {
+        new Notification("Gratulacje!", {
+            body: "Ułożyłeś puzzle poprawnie!",
+        });
+    }
 }
 
 function getLocation() {
@@ -25,6 +44,10 @@ function showPosition(position) {
     L.marker([lat, lon]).addTo(map)
         .bindPopup("Twoja lokalizacja")
         .openPopup();
+
+    // Wyświetl współrzędne w elemencie coordinatesDisplay
+    const coordinatesDisplay = document.getElementById('coordinatesDisplay');
+    coordinatesDisplay.textContent = `Twoje współrzędne: Szerokość: ${lat.toFixed(6)}, Długość: ${lon.toFixed(6)}`;
 }
 
 function showError(error) {
@@ -87,7 +110,7 @@ function createScrambledPuzzle(imgUrl) {
 
             // Dodaj atrybut data-index do każdego puzzla
             piece.dataset.index = `${row}-${col}`;
-
+            
             // Nasłuchiwanie zdarzeń przeciągania
             piece.addEventListener('dragstart', (e) => {
                 e.dataTransfer.setData('pieceId', piece.style.backgroundPosition);
@@ -138,7 +161,7 @@ function createPuzzleGrid() {
                 draggingPiece.style.border = '1px solid #ccc';
                 draggingPiece.style.backgroundSize = `600px 400px`; // Dopasowanie do rozmiaru obrazka
                 draggingPiece.style.boxSizing = 'border-box';
-
+    
                 cell.appendChild(draggingPiece); // Dodaj przesunięty puzzel do nowej komórki
 
                 // Sprawdź, czy puzzle są poprawnie ułożone
@@ -177,30 +200,31 @@ function createPuzzleGrid() {
 function checkPuzzleCompletion() {
     const puzzleContainer = document.getElementById('puzzleContainer');
     const cells = Array.from(puzzleContainer.children);
-    
+        
     const rows = 4;
     const cols = 4;
     let isCompleted = true;
 
     for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-            const cell = cells[row * cols + col];
-            if (cell.childElementCount === 0) {
-                isCompleted = false;
-                break;
-            }
-
-            const piece = cell.firstElementChild;
-            const expectedIndex = `${row}-${col}`; // Oczekiwany indeks
-            if (piece.dataset.index !== expectedIndex) {
-                isCompleted = false;
-                break;
+            for (let col = 0; col < cols; col++) {
+                const cell = cells[row * cols + col];
+                if (cell.childElementCount === 0) {
+                    isCompleted = false;
+                    break;
+                }
+    
+                const piece = cell.firstElementChild;
+                const expectedIndex = `${row}-${col}`; // Oczekiwany indeks
+                if (piece.dataset.index !== expectedIndex) {
+                    isCompleted = false;
+                    break;
+                }
             }
         }
-    }
-
-    if (isCompleted) {
+    
+        if (isCompleted) {
         alert("Gratulacje! Puzzle zostały poprawnie ułożone!");
+        showNotification(); // Wywołaj powiadomienie o sukcesie
     }
 }
 
@@ -208,6 +232,7 @@ function checkPuzzleCompletion() {
 window.onload = () => {
     initMap(); // Inicjalizacja mapy
     createPuzzleGrid(); // Tworzenie kratki na puzzle
+    requestNotificationPermission(); // Żądanie uprawnień do powiadomień
 };
 
 // Nasłuchuj przycisków
