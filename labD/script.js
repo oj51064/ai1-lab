@@ -38,8 +38,11 @@ document.getElementById('getWeatherButton').addEventListener('click', function()
 
 function displayCurrentWeather(data) {
     const weatherDiv = document.getElementById('currentWeather');
+    const iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
     weatherDiv.innerHTML = `
         <h2>Pogoda obecnie w ${data.name}:</h2>
+        <img src="${iconUrl}" alt="${data.weather[0].description}">
         <p>Temperatura: ${data.main.temp}°C</p>
         <p>Warunki: ${data.weather[0].description}</p>
         <p>Wilgotność: ${data.main.humidity}%</p>
@@ -50,16 +53,43 @@ function displayCurrentWeather(data) {
 function displayForecast(data) {
     const forecastDiv = document.getElementById('forecastWeather');
     forecastDiv.innerHTML = '<h2>Prognoza 5-dniowa (co 3 godziny):</h2>';
+    
+    // Grupa prognoz według dni
+    const forecastByDay = {};
 
-    const forecastList = data.list.slice(0, 40); // Pobieranie pierwszych 15 okresów (np. 3 dni)
-    forecastList.forEach(item => {
-        const dateTime = new Date(item.dt * 1000).toLocaleString('pl-PL');
-        forecastDiv.innerHTML += `
-            <p>
-                <strong>${dateTime}</strong> - 
-                Temp: ${item.main.temp}°C, 
-                Warunki: ${item.weather[0].description}
-            </p>
-        `;
+    data.list.forEach(item => {
+        const date = new Date(item.dt * 1000).toLocaleDateString('pl-PL');
+        if (!forecastByDay[date]) {
+            forecastByDay[date] = [];
+        }
+        forecastByDay[date].push(item);
     });
+
+    // Tworzenie wierszy dla każdego dnia
+    for (const [date, forecasts] of Object.entries(forecastByDay)) {
+        forecastDiv.innerHTML += `<div class="forecast-day"><h3>${date}</h3><div class="forecast-row"></div></div>`;
+        const dayContainer = forecastDiv.querySelector('.forecast-day:last-child .forecast-row');
+
+        // Wyświetlanie prognoz godzinowych w linii
+        dayContainer.style.display = 'flex';
+        dayContainer.style.flexWrap = 'nowrap';
+        dayContainer.style.overflowX = 'auto'; // Pozwala na przewijanie, jeśli jest za dużo elementów
+
+        forecasts.forEach(item => {
+            const dateTime = new Date(item.dt * 1000).toLocaleString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+            const iconUrl = `http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
+
+            dayContainer.innerHTML += `
+                <div class="forecast-item">
+                    <p><strong>${dateTime}</strong></p>
+                    <img src="${iconUrl}" alt="${item.weather[0].description}">
+                    <p>Temp: ${item.main.temp}°C</p>
+                </div>
+            `;
+        });
+    }
 }
+
+
+
+
