@@ -38,8 +38,11 @@ document.getElementById('getWeatherButton').addEventListener('click', function()
 
 function displayCurrentWeather(data) {
     const weatherDiv = document.getElementById('currentWeather');
+    const iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
     weatherDiv.innerHTML = `
         <h2>Pogoda obecnie w ${data.name}:</h2>
+        <img src="${iconUrl}" alt="${data.weather[0].description}">
         <p>Temperatura: ${data.main.temp}°C</p>
         <p>Warunki: ${data.weather[0].description}</p>
         <p>Wilgotność: ${data.main.humidity}%</p>
@@ -50,16 +53,19 @@ function displayCurrentWeather(data) {
 function displayForecast(data) {
     const forecastDiv = document.getElementById('forecastWeather');
     forecastDiv.innerHTML = '<h2>Prognoza 5-dniowa (co 3 godziny):</h2>';
+    const forecastList = data.list.slice(0, 40); // Pobieranie pierwszych 40 okresów (np. 5 dni co 3 godziny)
 
-    const forecastList = data.list.slice(0, 40); // Pobieranie pierwszych 15 okresów (np. 3 dni)
     forecastList.forEach(item => {
         const dateTime = new Date(item.dt * 1000).toLocaleString('pl-PL');
+        const iconUrl = `http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
+
         forecastDiv.innerHTML += `
-            <p>
-                <strong>${dateTime}</strong> - 
-                Temp: ${item.main.temp}°C, 
-                Warunki: ${item.weather[0].description}
-            </p>
+            <div class="forecast-item">
+                <p><strong>${dateTime}</strong></p>
+                <img src="${iconUrl}" alt="${item.weather[0].description}">
+                <p>Temp: ${item.main.temp}°C</p>
+                <p>Warunki: ${item.weather[0].description}</p>
+            </div>
         `;
     });
 }
